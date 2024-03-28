@@ -36,6 +36,7 @@ class RNNData:
             if self.args.sequence_length is not None:
                 seq_len = self.args.sequence_length
                 subj_seq_len = subject_sequence_chronologically_ordered.shape[0]
+                print(seq_len, subj_seq_len)
                 if subj_seq_len > seq_len:
                     # set sequence testing
                     i = 0
