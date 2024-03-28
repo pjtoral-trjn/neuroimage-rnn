@@ -36,7 +36,7 @@ class RNNData:
             if self.args.sequence_length is not None:
                 seq_len = self.args.sequence_length
                 subj_seq_len = subject_sequence_chronologically_ordered.shape[0]
-                if subj_seq_len > seq_len:
+                if subj_seq_len >= seq_len:
                     if seq_len == 1:
                         for i in range(subject_sequence_chronologically_ordered["volume"].shape[0]):
                             pathway = subject_sequence_chronologically_ordered["volume"].values[i]
@@ -58,7 +58,14 @@ class RNNData:
                         working_label_list = []
                         while j < subj_seq_len:
                             working_pathway_list.append(subject_sequence_chronologically_ordered["volume"].values[i:j])
-                            working_label_list.append(subject_sequence_chronologically_ordered["label"].values[i:j])
+                            for label_ in subject_sequence_chronologically_ordered["label"].values[i:j]:
+                                label = None
+                                # print("CN vs AD")
+                                if label_ == 0:
+                                    label = [0]
+                                elif label_ == 2:
+                                    label = [1]
+                                working_label_list.append(label)
                             i += (seq_len - 1)
                             j = (i + seq_len - 1)
 
