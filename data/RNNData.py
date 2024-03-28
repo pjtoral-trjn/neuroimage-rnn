@@ -44,7 +44,7 @@ class RNNData:
                     working_label_list = []
                     while j < subj_seq_len:
                         working_pathway_list.append(subject_sequence_chronologically_ordered["volume"].values[i:j])
-                        working_label_list(subject_sequence_chronologically_ordered["label"].values[i:j])
+                        working_label_list.append(subject_sequence_chronologically_ordered["label"].values[i:j])
                         i += (seq_len - 1)
                         j = (i + seq_len - 1)
 
