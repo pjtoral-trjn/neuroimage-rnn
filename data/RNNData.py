@@ -25,45 +25,41 @@ class RNNData:
         sequence_list = []
         target_class_list = []
         unique_subj_ids = df["subj_id"].unique()
-
         print(self.args.task_selection)
+
         for subj_id in unique_subj_ids:
+            # Retrieve a Subject Sequence
             subject_sequence = df[df["subj_id"] == subj_id]
-            subject_sequence.sort_values(by=["subj_id", "viscode"], inplace=True)
+            # Chronologically Order the subject sequence
+            subject_sequence_chronologically_ordered = subject_sequence.sort_values(by=["subj_id", "viscode"])
 
-            # single sequence testing
-            for i in range(subject_sequence["volume"].shape[0]):
-                pathway = subject_sequence["volume"].values[i]
-                sequence_list.append([pathway])
-            # label_array = []
-            for label_ in subject_sequence["label"]:
+            if self.args.sequence_length is not None:
+                seq_len = self.args.sequence_length
+                # single sequence testing
+                for i in range(subject_sequence_chronologically_ordered["volume"].shape[0]):
+                    pathway = subject_sequence_chronologically_ordered["volume"].values[i]
+                    sequence_list.append([pathway])
+                # label_array = []
+                for label_ in subject_sequence_chronologically_ordered["label"]:
+                    label = None
+                    # print("CN vs AD")
+                    if label_ == 0:
+                        label = [0]
+                    elif label_ == 2:
+                        label = [1]
+                    target_class_list.append([label])
+            else:
+                # Arbitrary Sequence Length
                 label_array = []
-                label = None
-                # print("CN vs AD")
-                if label_ == 0:
-                    label = [0]
-                elif label_ == 2:
-                    label = [1]
-                # label_array.append(label)
-                target_class_list.append([label])
-            
-            # sequence_list.append(subject_sequence["volume"].values)
-            # target_class_list.append(label_array)
-
-            #     if label_ == 0 or label_ == 1:
-            #         label = [0]
-            #     elif label_ == 2:
-            #         label = [1]
-                # elif label_ == 2:
-                #     label = [[0],[0],[1]]
-                # target_class_list.append([label])
-
-            # extract full sequence
-            # if subject_sequence.shape[0] < 13:
-            #     label = None
-            #     label_array = []
-            #     labels = subject_sequence["label"]
-            #     for label_ in labels:
+                for label_ in subject_sequence["label"]:
+                    label = None
+                    if label_ == 0:
+                        label = [0]
+                    elif label_ == 2:
+                        label = [1]
+                    label_array.append(label)
+                sequence_list.append(subject_sequence["volume"].values)
+                target_class_list.append(label_array)
             # print("CN vs MCI vs AD")
             # if label_ == 0:
             #     label = [[1],[0],[0]]
@@ -71,18 +67,6 @@ class RNNData:
             #     label = [[0],[1],[0]]
             # elif label_ == 2:
             #     label = [[0],[0],[1]]
-
-            # print("CN vs MCI + AD")
-            # if label_ == 0:
-            #     label = [0]
-            # elif label_ == 1 or label_ == 2:
-            #     label = [1]
-
-            # print("CN + MCI vs AD")
-            # if label_ == 0 or label_ == 1:
-            #     label = [0]
-            # elif label_ == 2:
-            #     label = [1]
         return sequence_list, target_class_list
 
     def set_data_generators(self):
