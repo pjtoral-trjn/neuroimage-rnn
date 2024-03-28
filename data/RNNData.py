@@ -68,9 +68,11 @@ class RNNData:
                                 working_label_list.append(label)
                             i += (seq_len - 1)
                             j = (i + seq_len - 1)
-
+                        print(working_label_list)
+                        print(working_pathway_list)
                         target_class_list.append(working_label_list)
                         sequence_list.append(working_pathway_list)
+                        break
 
             else:
                 # Arbitrary Sequence Length
