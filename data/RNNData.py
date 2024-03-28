@@ -66,7 +66,7 @@ class RNNData:
                                 elif label_ == 2:
                                     label = [1]
                                 working_label_list.append(label)
-                            i += (seq_len - 1)
+                            i += 1
                             j = (i + seq_len - 1)
                         target_class_list.append(working_label_list)
                         sequence_list.append(working_pathway_list)
