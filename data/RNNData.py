@@ -57,7 +57,7 @@ class RNNData:
                         working_pathway_list = []
                         working_label_list = []
                         while j < subj_seq_len:
-                            working_pathway_list.append(subject_sequence_chronologically_ordered["volume"].values[i:j])
+                            working_pathway_list.extend(subject_sequence_chronologically_ordered["volume"].values[i:j])
                             for label_ in subject_sequence_chronologically_ordered["label"].values[i:j]:
                                 label = None
                                 # print("CN vs AD")
