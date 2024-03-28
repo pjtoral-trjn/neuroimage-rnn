@@ -35,19 +35,33 @@ class RNNData:
 
             if self.args.sequence_length is not None:
                 seq_len = self.args.sequence_length
-                # single sequence testing
-                for i in range(subject_sequence_chronologically_ordered["volume"].shape[0]):
-                    pathway = subject_sequence_chronologically_ordered["volume"].values[i]
-                    sequence_list.append([pathway])
-                # label_array = []
-                for label_ in subject_sequence_chronologically_ordered["label"]:
-                    label = None
-                    # print("CN vs AD")
-                    if label_ == 0:
-                        label = [0]
-                    elif label_ == 2:
-                        label = [1]
-                    target_class_list.append([label])
+                subj_seq_len = subject_sequence_chronologically_ordered.shape[0]
+                if subj_seq_len > seq_len:
+                    # set sequence testing
+                    i = 0
+                    j = (i + seq_len - 1)
+                    working_pathway_list = []
+                    working_label_list = []
+                    while j < subj_seq_len:
+                        working_pathway_list.append(subject_sequence_chronologically_ordered["volume"].values[i:j])
+                        working_label_list(subject_sequence_chronologically_ordered["label"].values[i:j])
+                        i += (seq_len - 1)
+                        j = (i + seq_len - 1)
+
+                    target_class_list.append([working_label_list])
+                    sequence_list.append([working_pathway_list])
+                    # for i in range(subject_sequence_chronologically_ordered["volume"].shape[0]):
+                    #     pathway = subject_sequence_chronologically_ordered["volume"].values[i]
+                    #     sequence_list.append([pathway])
+                    # # label_array = []
+                    # for label_ in subject_sequence_chronologically_ordered["label"]:
+                    #     label = None
+                    #     # print("CN vs AD")
+                    #     if label_ == 0:
+                    #         label = [0]
+                    #     elif label_ == 2:
+                    #         label = [1]
+                    #     target_class_list.append([label])
             else:
                 # Arbitrary Sequence Length
                 label_array = []
