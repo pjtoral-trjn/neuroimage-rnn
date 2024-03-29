@@ -23,7 +23,7 @@ def tcnn(args):
     inputs = tf.nn.relu(inputs, name="post_relu")
     inputs = tf.keras.layers.AveragePooling3D(pool_size=(2, 3, 2), strides=2, name="post_avg_pool")(inputs)
 
-    inputs = tf.keras.layers.Dropout(rate=args.drop_out, name="drop")(inputs)
+    inputs = tf.keras.layers.Dropout(rate=0.1, name="drop")(inputs)
 
     outputs = tf.keras.layers.Conv3D(64, 1, strides=1, name="reg_conv")(inputs)
     outputs = tf.keras.layers.Flatten(name="flatten")(outputs)
