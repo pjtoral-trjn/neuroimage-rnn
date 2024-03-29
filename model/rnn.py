@@ -63,6 +63,7 @@ def decision_network(args):
     x = tf.keras.layers.Dense(units=64, activation="gelu")(x)
     x = tf.keras.layers.Dropout(0.25)(x)
     x = tf.keras.layers.Dense(units=32, activation="gelu")(x)
+    x = tf.keras.layers.Dropout(0.25)(x)
 
     if args.task_selection == "binary_classification":
         output = tf.keras.layers.Dense(units=1, name="Binary-Classifier", activation="sigmoid")(x)
