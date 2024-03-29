@@ -42,12 +42,12 @@ def rnn(args):
     dn = decision_network(args)
     rnn_model.add(TimeDistributed(dn))
 
-    print("\n\n\n Embedding Model")
+    print("\n\n\n Embedding Model (Feature Extractor)")
     embedding_model.summary()
+    print("\n\n\n Decision Network (Head)")
+    dn.summary()
     print("\n\n\n Full RNN Architecture")
     rnn_model.summary()
-    print("\n\n\n Decision Network")
-    dn.summary()
 
     return rnn_model
 
@@ -59,11 +59,11 @@ def decision_network(args):
     """
     decision_network_input = tf.keras.Input((args.sequence_length, 256), batch_size=args.batch_size)
     x = tf.keras.layers.Dense(units=128, activation="relu")(decision_network_input)
-    x = tf.keras.layers.Dropout(0.25)(x)
+    x = tf.keras.layers.Dropout(0.2)(x)
     x = tf.keras.layers.Dense(units=64, activation="relu")(x)
-    x = tf.keras.layers.Dropout(0.25)(x)
+    x = tf.keras.layers.Dropout(0.2)(x)
     x = tf.keras.layers.Dense(units=32, activation="relu")(x)
-    x = tf.keras.layers.Dropout(0.25)(x)
+    x = tf.keras.layers.Dropout(0.2)(x)
 
     if args.task_selection == "binary_classification":
         output = tf.keras.layers.Dense(units=1, name="Binary-Classifier", activation="sigmoid")(x)
@@ -73,4 +73,3 @@ def decision_network(args):
         output = tf.keras.layers.Dense(units=1, name="Regression")(x)
 
     return Model(inputs=decision_network_input, outputs=output, name="Decision-Network")
-
