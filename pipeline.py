@@ -83,7 +83,6 @@ class Pipeline:
         if self.args.task_selection == Constants.binary_classification:
             self.metrics = [tf.keras.metrics.AUC(name="auc"), tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
                             tf.keras.metrics.BinaryAccuracy(),
-                            tf.keras.metrics.F1Score(),
                             tf.keras.metrics.AUC(curve="PR", name="auc_pr")]
 
         if self.args.task_selection == Constants.multi_classification:
