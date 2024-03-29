@@ -58,11 +58,11 @@ def decision_network(args):
     :return:
     """
     decision_network_input = tf.keras.Input((args.sequence_length, 256), batch_size=args.batch_size)
-    x = tf.keras.layers.Dense(units=128, activation="relu")(decision_network_input)
+    x = tf.layers.Dense(units=128, activation="relu")(decision_network_input)
     x = tf.keras.layers.Dropout(0.25)(x)
-    x = tf.keras.layers.Dense(units=64, activation="relu")(x)
+    x = tf.layers.Dense(units=64, activation="relu")(x)
     x = tf.keras.layers.Dropout(0.25)(x)
-    x = tf.keras.layers.Dense(units=32, activation="relu")(x)
+    x = tf.layers.Dense(units=32, activation="relu")(x)
     x = tf.keras.layers.Dropout(0.25)(x)
 
     if args.task_selection == "binary_classification":
