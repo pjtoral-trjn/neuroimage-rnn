@@ -14,7 +14,7 @@ def rnn(args):
     images = tf.keras.Input((args.sequence_length, args.width, args.height, args.depth, 1), batch_size=args.batch_size)
     embedding_model = None
 
-    tcnn_full_model = tcnn()
+    tcnn_full_model = tcnn(args)
     tcnn_full_model.set_weights(tf.keras.models.load_model(args.embedding_model_pathway, compile=False).get_weights())
     embedding_model = tf.keras.models.Sequential(name="3DCNN")
     for layer in tcnn_full_model.layers[0:-1]:
