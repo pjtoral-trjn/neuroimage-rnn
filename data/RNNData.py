@@ -107,12 +107,12 @@ class RNNData:
               , len(validation_target_class_list))
         print("Test Sequence Examples:", len(test_sequence_list), ", Target Classes:", len(test_target_class_list))
 
-        self.train_batch = self.LSTMDataGenerator(train_sequence_list, train_target_class_list, self.batch_size)
-        self.validation_batch = self.LSTMDataGenerator(validation_sequence_list, validation_target_class_list
+        self.train_batch = self.RNNDataGenerator(train_sequence_list, train_target_class_list, self.batch_size)
+        self.validation_batch = self.RNNDataGenerator(validation_sequence_list, validation_target_class_list
                                                        , self.batch_size)
-        self.test_batch = self.LSTMDataGenerator(test_sequence_list, test_target_class_list, self.batch_size)
+        self.test_batch = self.RNNDataGenerator(test_sequence_list, test_target_class_list, self.batch_size)
 
-    class LSTMDataGenerator(tf.keras.utils.Sequence):
+    class RNNDataGenerator(tf.keras.utils.Sequence):
         def read_scan(self, path):
             scan = nib.load(path)
             original_volume = scan.get_fdata()
