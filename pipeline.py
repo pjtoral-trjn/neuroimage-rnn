@@ -39,6 +39,7 @@ class Pipeline:
             self.set_loss_fn()
             self.set_callbacks()
             self.set_metrics()
+            self.compile()
 
     def set_optimizer(self):
         tf.keras.optimizers.RMSprop(learning_rate=self.args.init_learning_rate)
