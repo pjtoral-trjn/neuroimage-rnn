@@ -1,6 +1,5 @@
 .idea/
-./model_checkpoint/
-./output/
-./*/__pycache__/
-./__pycache__/
+model_checkpoint/
+output/
+__pycache__/
 ./jobs/
