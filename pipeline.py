@@ -134,7 +134,7 @@ class Pipeline:
         print("----- Model Summary Before Fit -----")
         print(self.model.summary())
         print("----- Fit Begin -----")
-        # self.history = self.fit()
+        self.history = self.fit()
         print("----- Fit Complete -----")
 
         # Save experiment configurations
