@@ -3,3 +3,4 @@ model_checkpoint/
 output/
 __pycache__/
 ./jobs/
+*.out
