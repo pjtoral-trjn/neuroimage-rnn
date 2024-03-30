@@ -134,7 +134,7 @@ class Pipeline:
         print("----- Model Summary Before Fit -----")
         print(self.model.summary())
         print("----- Fit Begin -----")
-        self.history = self.fit()
+        # self.history = self.fit()
         print("----- Fit Complete -----")
 
         # Save experiment configurations
@@ -149,8 +149,14 @@ class Pipeline:
         # Save experiment results
         history = pd.DataFrame(self.history.history)
         evaluation = self.model.evaluate(self.test_batch)
-        model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
+        model_predictions = []
+        model_predictions_arr = self.model.predict(self.test_batch)
+        for p in model_predictions_arr:
+            model_predictions.extend(p)
+        # model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
         true_labels = self.data.test_df["label"].to_numpy()
+        print(len(true_labels))
+        print(len(model_predictions))
         predictions = pd.DataFrame(data={"predictions": model_predictions, "true_labels": true_labels})
         history.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_history.csv")
         predictions.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_predictions.csv")
