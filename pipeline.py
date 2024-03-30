@@ -150,7 +150,7 @@ class Pipeline:
         history = pd.DataFrame(self.history.history)
         evaluation = self.model.evaluate(self.test_batch)
         model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
-        true_labels = self.data.test_df[self.args.target_column].to_numpy()
+        true_labels = self.data.test_df["label"].to_numpy()
         predictions = pd.DataFrame(data={"predictions": model_predictions, "true_labels": true_labels})
         history.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_history.csv")
         predictions.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_predictions.csv")
