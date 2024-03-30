@@ -147,7 +147,7 @@ class Pipeline:
         config_df.to_csv("./output/" + self.output_filename + "/config.csv", index=False)
 
         # Save experiment results
-        # history = pd.DataFrame(self.history.history)
+        history = pd.DataFrame(self.history.history)
         evaluation = self.model.evaluate(self.test_batch)
         model_predictions = []
         model_predictions_arr = self.model.predict(self.test_batch)
@@ -155,9 +155,7 @@ class Pipeline:
             model_predictions.extend(p)
         # model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
         true_labels = self.data.test_df["label"].to_numpy()
-        print(len(true_labels))
-        print(len(model_predictions))
         predictions = pd.DataFrame(data={"predictions": model_predictions, "true_labels": true_labels})
-        # history.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_history.csv")
+        history.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_history.csv")
         predictions.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_predictions.csv")
 
