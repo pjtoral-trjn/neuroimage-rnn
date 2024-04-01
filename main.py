@@ -9,9 +9,9 @@ if __name__ == '__main__':
     print(args)
     pipeline = Pipeline(args)
     if args.evaluate_only:
+        print("----- Evaluation Start -----")
         pipeline.evaluate_only()
+        print("----- Evaluation End -----")
     else:
         pipeline.run_pipeline()
-
-
     print("----- Experiment Complete -----")
