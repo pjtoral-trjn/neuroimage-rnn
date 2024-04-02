@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.models import Model
 import tensorflow_addons as tfa
-
+from utils.constants import Constants
 def tcnn(args):
     # Tamgohna model
     def convolution_block(inputs, num_filter, name):
@@ -27,6 +27,11 @@ def tcnn(args):
 
     outputs = tf.keras.layers.Conv3D(64, 1, strides=1, name="reg_conv")(inputs)
     outputs = tf.keras.layers.Flatten(name="flatten")(outputs)
-    outputs = tf.keras.layers.Dense(units=1, name="3DCNN-Head")(outputs)
+
+    if args.task_selection == Constants.multi_classification:
+        outputs = tf.keras.layers.Dense(units=3, name="3DCNN-Head")(outputs)
+    elif args.task_selection == Constants.binary_classification:
+        outputs = tf.keras.layers.Dense(units=1, name="3DCNN-Head")(outputs)
+
     model = Model(inputs=images, outputs=outputs, name="3DCNN")
     return model
