@@ -7,8 +7,6 @@ from utils.constants import Constants
 class CNNData:
     def __init__(self, args):
         self.args = args
-        self.train_pathway = self.args.train_pathway
-        self.test_pathway = self.args.test_pathway
         self.pathway = "/lfs1/pjtoral/cognitive-decline/scripts/data/revised/standardized/mci_included"
         self.dof = "9DOF"
         self.target_column = self.args.target_column
@@ -24,7 +22,6 @@ class CNNData:
         self.set_data_generators()
 
     def set_dataframes(self):
-        print(self.train_pathway)
         df_train = pd.read_csv("/project/jambitem_1194/pjtoral/data/adni_train.csv")
         df_validation = pd.read_csv("/project/jambitem_1194/pjtoral/data/adni_validation.csv")
         df_test = pd.read_csv("/project/jambitem_1194/pjtoral/data/adni_test.csv")
