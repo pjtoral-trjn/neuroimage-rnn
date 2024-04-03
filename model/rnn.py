@@ -47,12 +47,12 @@ def rnn(args):
         rnn_model.add(Bidirectional(LSTM(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
 
     # Configure Head
-    if args.include_decision_network:
+    if args.include_decision_network is True:
         dn = decision_network(args)
         rnn_model.add(TimeDistributed(dn))
         print("\n\n\n Decision Network (Head)")
         dn.summary()
-    elif not args.include_decision_network:
+    elif args.include_decision_network is False:
         head = get_head_layer(args)
         rnn_model.add(TimeDistributed(head))
 
