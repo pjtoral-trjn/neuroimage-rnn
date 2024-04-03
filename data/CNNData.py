@@ -115,11 +115,14 @@ class CNNData:
         #test_y = self.test_df[self.target_column].to_numpy().astype(np.float32)
         test_y = self.test_df[self.target_column].to_numpy()
 
-        self.train_batch = self.DataGenerator(train_x, train_y, self.batch_size)
-        self.validation_batch = self.DataGenerator(validate_x, validate_y, self.batch_size)
-        self.test_batch = self.DataGenerator(test_x, test_y, self.batch_size)
+        self.train_batch = self.DataGenerator(train_x, train_y, self.batch_size, self.args)
+        self.validation_batch = self.DataGenerator(validate_x, validate_y, self.batch_size, self.args)
+        self.test_batch = self.DataGenerator(test_x, test_y, self.batch_size, self.args)
 
     class DataGenerator(tf.keras.utils.Sequence):
+        def __init__(self, x,y,bs, args):
+            super.__init__(x, y, bs)
+            self.args = args
         def read_scan(self, path):
             scan = nib.load(path)
             original_volume = scan.get_fdata()
@@ -146,4 +149,6 @@ class CNNData:
         def __getitem__(self, idx):
             batch_x = self.image_filenames[idx * self.batch_size: (idx + 1) * self.batch_size]
             batch_y = self.labels[idx * self.batch_size: (idx + 1) * self.batch_size]
-            return (np.asarray([self.read_scan(path) for path in batch_x]), np.asarray(batch_y[0]))
+            if self.args == Constants.multi_classification:
+                return (np.asarray([self.read_scan(path) for path in batch_x]), np.asarray(batch_y[0]).reshape((1,3)))
+            return (np.asarray([self.read_scan(path) for path in batch_x]), np.asarray(batch_y))
