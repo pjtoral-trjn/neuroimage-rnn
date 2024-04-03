@@ -87,7 +87,7 @@ class Pipeline:
                             tf.keras.metrics.AUC(curve="PR", name="auc_pr")]
 
         if self.args.task_selection == Constants.multi_classification:
-            self.metrics = [tf.keras.metrics.AUC(name="auc"), tf.keras.metrics.AUC(name="pr"),
+            self.metrics = [tf.keras.metrics.AUC(name="auc"), tf.keras.metrics.AUC(curve="pr"),
                             tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
                             tf.keras.metrics.CategoricalAccuracy()]
 
