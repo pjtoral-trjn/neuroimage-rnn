@@ -146,6 +146,4 @@ class CNNData:
         def __getitem__(self, idx):
             batch_x = self.image_filenames[idx * self.batch_size: (idx + 1) * self.batch_size]
             batch_y = self.labels[idx * self.batch_size: (idx + 1) * self.batch_size]
-            if self.args.task_selection == Constants.multi_classification:
-                return (np.asarray([self.read_scan(path) for path in batch_x]), np.asarray(batch_y[0]).reshape((1,3)))
             return (np.asarray([self.read_scan(path) for path in batch_x]), np.asarray(batch_y))
