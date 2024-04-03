@@ -73,7 +73,7 @@ def decision_network(args):
     x = tf.keras.layers.Dense(units=16, activation="relu")(x)
     x = tf.keras.layers.Dropout(0.25)(x)
     head = get_head_layer(args)
-    output = head()(x)
+    output = head(x)
     return Model(inputs=decision_network_input, outputs=output, name="Decision-Network")
 
 def get_head_layer(args):
