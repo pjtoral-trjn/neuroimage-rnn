@@ -42,9 +42,9 @@ def rnn(args):
 
     # Add RNN Backbone
     if args.rnn_selection == "gru":
-        rnn_model.add(Bidirectional(GRU(128, return_sequences=True, recurrent_dropout=0.025)))
+        rnn_model.add(Bidirectional(GRU(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
     elif args.rnn_selection == "lstm":
-        rnn_model.add(Bidirectional(LSTM(128, return_sequences=True, recurrent_dropout=0.025)))
+        rnn_model.add(Bidirectional(LSTM(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
 
     # Configure Head
     if args.include_decision_network:
@@ -66,12 +66,12 @@ def decision_network(args):
     :return:
     """
     decision_network_input = tf.keras.Input((args.sequence_length, 256), batch_size=args.batch_size)
-    x = tf.keras.layers.Dense(units=64, activation="relu")(decision_network_input)
-    x = tf.keras.layers.Dropout(0.25)(x)
-    x = tf.keras.layers.Dense(units=32, activation="relu")(x)
-    x = tf.keras.layers.Dropout(0.25)(x)
-    x = tf.keras.layers.Dense(units=16, activation="relu")(x)
-    x = tf.keras.layers.Dropout(0.25)(x)
+    x = tf.keras.layers.Dense(units=64, activation="gelu")(decision_network_input)
+    x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
+    x = tf.keras.layers.Dense(units=32, activation="gelu")(x)
+    x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
+    x = tf.keras.layers.Dense(units=16, activation="gelu")(x)
+    x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
     head = get_head_layer(args)
     output = head(x)
     return Model(inputs=decision_network_input, outputs=output, name="Decision-Network")

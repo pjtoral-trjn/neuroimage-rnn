@@ -19,6 +19,10 @@ def config_parser():
                                       , help="Evaluation Only")
     configuration_parser.add_argument("-idn", "--include_decision_network", type=bool, default=False
                                       , help="Include Decision Network?")
+    configuration_parser.add_argument("-dno", "--decision_network_dropout", type=float, default=0.25
+                                      , help="Decision Network Dropout")
+    configuration_parser.add_argument("-rno", "--recurrent_dropout", type=float, default=0.1
+                                      , help="Recurrent Network Dropout")
 
 
     # necessary configuration
