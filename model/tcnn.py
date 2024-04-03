@@ -29,8 +29,10 @@ def tcnn(args):
     outputs = tf.keras.layers.Flatten(name="flatten")(outputs)
 
     if args.task_selection == Constants.multi_classification:
-        outputs = tf.keras.layers.Dense(units=3, name="3DCNN-Head")(outputs)
+        outputs = tf.keras.layers.Dense(units=3, name="3DCNN-Head", activation="softmax")(outputs)
     elif args.task_selection == Constants.binary_classification:
+        outputs = tf.keras.layers.Dense(units=1, name="3DCNN-Head", activation="sigmoid")(outputs)
+    elif args.task_selection == Constants.regression:
         outputs = tf.keras.layers.Dense(units=1, name="3DCNN-Head")(outputs)
 
     model = Model(inputs=images, outputs=outputs, name="3DCNN")

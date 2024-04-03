@@ -17,6 +17,8 @@ def config_parser():
                                       , help="Sequence Length of input")
     configuration_parser.add_argument("-eo", "--evaluate_only", type=bool, default=False
                                       , help="Evaluation Only")
+    configuration_parser.add_argument("-idn", "--include_decision_network", type=bool, default=False
+                                      , help="Include Decision Network?")
 
 
     # necessary configuration
