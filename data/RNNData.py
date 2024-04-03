@@ -22,9 +22,9 @@ class RNNData:
         self.test_batch = pd.DataFrame()
         self.set_data_generators()
     def set_binary_classification_labels(self):
-        print(self.train_df["label"].value_counts())
-        print(self.validation_df["label"].value_counts())
-        print(self.test_df["label"].value_counts())
+        # print(self.train_df["label"].value_counts())
+        # print(self.validation_df["label"].value_counts())
+        # print(self.test_df["label"].value_counts())
 
         # Removing 1 = MCI for binary classification
         self.train_df.drop(self.train_df.loc[self.train_df['label'] == 1].index, inplace=True)
@@ -41,9 +41,9 @@ class RNNData:
         test_index = self.test_df.loc[self.test_df['label'] == 2].index
         self.test_df.loc[test_index, 'label'] = 1
 
-        print(self.train_df["label"].value_counts())
-        print(self.validation_df["label"].value_counts())
-        print(self.test_df["label"].value_counts())
+        # print(self.train_df["label"].value_counts())
+        # print(self.validation_df["label"].value_counts())
+        # print(self.test_df["label"].value_counts())
 
     def set_multi_classification_labels(self):
         arr = []
@@ -134,16 +134,14 @@ class RNNData:
         elif self.args.task_selection == Constants.multi_classification:
             self.set_multi_classification_labels()
 
-
-        # Datagenerators should be fed (subject_sequence [t0,t1,...tn-1], target_class @ tn)
         train_sequence_list, train_target_class_list = self.create_sequence_and_target(self.train_df)
         validation_sequence_list, validation_target_class_list = self.create_sequence_and_target(self.validation_df)
         test_sequence_list, test_target_class_list = self.create_sequence_and_target(self.test_df)
 
-        print("\nTrain Sequence Examples:", len(train_sequence_list), ", Target Classes:", len(train_target_class_list))
-        print("Validation Sequence Examples:", len(validation_sequence_list), ", Target Classes:"
+        print("\nTrain Sequences:", len(train_sequence_list), ", Target Classes:", len(train_target_class_list))
+        print("Validation Sequences:", len(validation_sequence_list), ", Target Classes:"
               , len(validation_target_class_list))
-        print("Test Sequence Examples:", len(test_sequence_list), ", Target Classes:", len(test_target_class_list))
+        print("Test Sequences:", len(test_sequence_list), ", Target Classes:", len(test_target_class_list))
 
         self.train_batch = self.RNNDataGenerator(train_sequence_list, train_target_class_list, self.batch_size)
         self.validation_batch = self.RNNDataGenerator(validation_sequence_list, validation_target_class_list
@@ -177,11 +175,13 @@ class RNNData:
             batch_y = self.labels[idx * self.batch_size: (idx + 1) * self.batch_size]
             output_batch_x = np.asarray([self.read_scan(path) for path in batch_x[0]])
             output_batch_y = []
-            # for y in batch_y[0]:
-            # out_y = np.asarray(y).reshape(1,3)
+
             for y in batch_y:
                 out_y = np.asarray(y)
                 output_batch_y.append(out_y)
+
+            # for y in batch_y[0]:
+            #   out_y = np.asarray(y).reshape(1,3)
             # output_batch_y = np.asarray(batch_y[0]).reshape(1,3)
             # print(output_batch_y)
             item = (
