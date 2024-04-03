@@ -120,9 +120,6 @@ class CNNData:
         self.test_batch = self.DataGenerator(test_x, test_y, self.batch_size, self.args)
 
     class DataGenerator(tf.keras.utils.Sequence):
-        def __init__(self, x,y,bs, args):
-            super.__init__(x, y, bs)
-            self.args = args
         def read_scan(self, path):
             scan = nib.load(path)
             original_volume = scan.get_fdata()
@@ -138,10 +135,11 @@ class CNNData:
             return volume
 
 
-        def __init__(self, image_filenames, labels, batch_size):
+        def __init__(self, image_filenames, labels, batch_size, args):
             self.image_filenames = image_filenames
             self.labels = labels
             self.batch_size = batch_size
+            self.args = args
 
         def __len__(self):
             return (np.ceil(len(self.image_filenames) / float(self.batch_size))).astype(np.int32)
