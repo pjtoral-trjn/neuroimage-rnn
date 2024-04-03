@@ -3,6 +3,7 @@ import tensorflow as tf
 import pandas as pd
 import numpy as np
 import nibabel as nib
+from utils.constants import Constants
 
 class RNNData:
     def __init__(self, args):
@@ -20,13 +21,74 @@ class RNNData:
         self.validation_batch = pd.DataFrame()
         self.test_batch = pd.DataFrame()
         self.set_data_generators()
+    def set_binary_classification_labels(self):
+        print(self.train_df["label"].value_counts())
+        print(self.validation_df["label"].value_counts())
+        print(self.test_df["label"].value_counts())
+
+        # Removing 1 = MCI for binary classification
+        self.train_df.drop(self.train_df.loc[self.train_df['label'] == 1].index, inplace=True)
+        self.validation_df.drop(self.validation_df.loc[self.validation_df['label'] == 1].index, inplace=True)
+        self.test_df.drop(self.test_df.loc[self.test_df['label'] == 1].index, inplace=True)
+
+        # Converting Class to Binary
+        train_index = self.train_df.loc[self.train_df['label'] == 2].index
+        self.train_df.loc[train_index, 'label'] = 1
+
+        validation_index = self.validation_df.loc[self.validation_df['label'] == 2].index
+        self.validation_df.loc[validation_index, 'label'] = 1
+
+        test_index = self.test_df.loc[self.test_df['label'] == 2].index
+        self.test_df.loc[test_index, 'label'] = 1
+
+        print(self.train_df["label"].value_counts())
+        print(self.validation_df["label"].value_counts())
+        print(self.test_df["label"].value_counts())
+
+    def set_multi_classification_labels(self):
+        arr = []
+        for i in range(len(self.train_df["label"].values)):
+            # print("CN vs MCI vs AD")
+            label_ = self.train_df["label"].values[i]
+            if label_ == 0:
+                label = [1, 0, 0]
+            elif label_ == 1:
+                label = [0, 1, 0]
+            elif label_ == 2:
+                label = [0, 0, 1]
+            arr.append(np.asarray(label))
+        self.train_df["label"] = arr
+
+        arr = []
+        for i in range(len(self.validation_df["label"].values)):
+            # print("CN vs MCI vs AD")
+            label_ = self.validation_df["label"].values[i]
+            if label_ == 0:
+                label = [1, 0, 0]
+            elif label_ == 1:
+                label = [0, 1, 0]
+            elif label_ == 2:
+                label = [0, 0, 1]
+            arr.append(np.asarray(label))
+        self.validation_df["label"] = arr
+
+        arr = []
+        for i in range(len(self.test_df["label"].values)):
+            # print("CN vs MCI vs AD")
+            label_ = self.test_df["label"].values[i]
+            if label_ == 0:
+                label = [1, 0, 0]
+            elif label_ == 1:
+                label = [0, 1, 0]
+            elif label_ == 2:
+                label = [0, 0, 1]
+            arr.append(np.asarray(label))
+        self.test_df["label"] = arr
 
     def create_sequence_and_target(self, df):
         sequence_list = []
         target_class_list = []
         unique_subj_ids = df["subj_id"].unique()
-        print(self.args.task_selection)
-
         for subj_id in unique_subj_ids:
             # Retrieve a Subject Sequence
             subject_sequence = df[df["subj_id"] == subj_id]
@@ -41,14 +103,7 @@ class RNNData:
                         for i in range(subject_sequence_chronologically_ordered["volume"].shape[0]):
                             pathway = subject_sequence_chronologically_ordered["volume"].values[i]
                             sequence_list.append([pathway])
-                        # label_array = []
-                        for label_ in subject_sequence_chronologically_ordered["label"]:
-                            label = None
-                            # print("CN vs AD")
-                            if label_ == 0:
-                                label = [0]
-                            elif label_ == 2:
-                                label = [1]
+                        for label in subject_sequence_chronologically_ordered["label"]:
                             target_class_list.append([label])
                     else:
                         # set sequence testing
@@ -58,13 +113,7 @@ class RNNData:
                         working_label_list = []
                         while j < subj_seq_len:
                             working_pathway_list.extend(subject_sequence_chronologically_ordered["volume"].values[i:j])
-                            for label_ in subject_sequence_chronologically_ordered["label"].values[i:j]:
-                                label = None
-                                # print("CN vs AD")
-                                if label_ == 0:
-                                    label = [0]
-                                elif label_ == 2:
-                                    label = [1]
+                            for label in subject_sequence_chronologically_ordered["label"].values[i:j]:
                                 working_label_list.append(label)
                             i += 1
                             j = (i + seq_len - 1)
@@ -73,29 +122,18 @@ class RNNData:
             else:
                 # Arbitrary Sequence Length
                 label_array = []
-                for label_ in subject_sequence["label"]:
-                    label = None
-                    if label_ == 0:
-                        label = [0]
-                    elif label_ == 2:
-                        label = [1]
+                for label in subject_sequence["label"]:
                     label_array.append(label)
                 sequence_list.append(subject_sequence["volume"].values)
                 target_class_list.append(label_array)
-            # print("CN vs MCI vs AD")
-            # if label_ == 0:
-            #     label = [[1],[0],[0]]
-            # elif label_ == 1:
-            #     label = [[0],[1],[0]]
-            # elif label_ == 2:
-            #     label = [[0],[0],[1]]
         return sequence_list, target_class_list
 
     def set_data_generators(self):
-        # Removing Certain class, 0 = CN, 1 = MCI, 2 = AD
-        self.train_df.drop(self.train_df.loc[self.train_df['label'] == 1].index, inplace=True)
-        self.validation_df.drop(self.validation_df.loc[self.validation_df['label'] == 1].index, inplace=True)
-        self.test_df.drop(self.test_df.loc[self.test_df['label'] == 1].index, inplace=True)
+        if self.args.task_selection == Constants.binary_classification:
+            self.set_binary_classification_labels()
+        elif self.args.task_selection == Constants.multi_classification:
+            self.set_multi_classification_labels()
+
 
         # Datagenerators should be fed (subject_sequence [t0,t1,...tn-1], target_class @ tn)
         train_sequence_list, train_target_class_list = self.create_sequence_and_target(self.train_df)
