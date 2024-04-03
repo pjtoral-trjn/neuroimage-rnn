@@ -67,11 +67,14 @@ def decision_network(args):
     """
     decision_network_input = tf.keras.Input((args.sequence_length, 256), batch_size=args.batch_size)
     x = tf.keras.layers.Dense(units=64, activation="gelu")(decision_network_input)
-    x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
+
+    if args.include_decision_network_dropout:
+        x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
     x = tf.keras.layers.Dense(units=32, activation="gelu")(x)
-    x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
+    if args.include_decision_network_dropout:
+        x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
     x = tf.keras.layers.Dense(units=16, activation="gelu")(x)
-    x = tf.keras.layers.Dropout(args.decision_network_dropout)(x)
+
     head = get_head_layer(args)
     output = head(x)
     return Model(inputs=decision_network_input, outputs=output, name="Decision-Network")
