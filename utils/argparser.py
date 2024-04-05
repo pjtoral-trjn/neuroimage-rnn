@@ -19,7 +19,7 @@ def config_parser():
                                       , help="Evaluation Only")
     configuration_parser.add_argument("-idn", "--include_decision_network", type=bool, default=False
                                       , help="Include Decision Network?")
-    configuration_parser.add_argument("-idn", "--include_decision_network_dropout", type=bool, default=False
+    configuration_parser.add_argument("-idnd", "--include_decision_network_dropout", type=bool, default=False
                                       , help="Include Decision Network Dropout?")
     configuration_parser.add_argument("-dno", "--decision_network_dropout", type=float, default=0.25
                                       , help="Decision Network Dropout")
