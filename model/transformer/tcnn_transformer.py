@@ -32,7 +32,7 @@ def tcnn_transformer(args):
     dff = 256
     num_heads = 4
     dropout_rate = 0.1
-    transformer = Transformer(
+    transformer = Transformer(args=args,
         num_layers=num_layers,
         d_model=d_model,
         num_heads=num_heads,
