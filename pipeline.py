@@ -4,6 +4,7 @@ import sys
 import pandas as pd
 import datetime
 from model.rnn import rnn
+from model.transformer import transformer_model
 from utils.constants import Constants
 from data.RNNData import RNNData
 
@@ -34,7 +35,10 @@ class Pipeline:
         tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     def configure_model(self):
-        self.model = rnn(self.args)
+        if self.args.model_architecture == "rnn":
+            self.model = rnn(self.args)
+        if self.args.model_architecture == "transformer":
+            self.model = transformer_model(self.args)
         if self.model is not None:
             self.set_optimizer()
             self.set_loss_fn()
