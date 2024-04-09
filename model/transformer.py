@@ -66,6 +66,5 @@ def transformer_model(args):
     t_model.add(images)
     t_model.add(layers.TimeDistributed(em, input_shape=(args.width, args.height, args.depth, 1)
                                   , batch_size=args.batch_size))
-    t_model.add(embeddings)
     t_model.add(trans)
     return t_model
