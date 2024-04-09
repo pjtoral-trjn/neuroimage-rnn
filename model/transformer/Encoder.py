@@ -1,5 +1,6 @@
 import tensorflow as tf
-from model.transformer.layer import PositionalEmbedding, EncoderLayer
+from model.transformer.layer.PositionalEmbedding import PositionalEmbedding
+from model.transformer.layer.EncoderLayer import EncoderLayer
 
 class Encoder(tf.keras.layers.Layer):
   def __init__(self, *, num_layers, d_model, num_heads,

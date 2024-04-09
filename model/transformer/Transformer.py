@@ -1,5 +1,6 @@
 import tensorflow as tf
-from model.transformer import Encoder, Decoder
+from model.transformer.Encoder import Encoder
+from model.transformer.Decoder import Decoder
 from model.rnn.rnn import get_head_layer
 class Transformer(tf.keras.Model):
   def __init__(self, *, args, num_layers, d_model, num_heads, dff,

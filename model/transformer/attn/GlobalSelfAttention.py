@@ -1,4 +1,4 @@
-from model.transformer.attn import BaseAttention
+from model.transformer.attn.BaseAttention import BaseAttention
 
 class GlobalSelfAttention(BaseAttention):
   def call(self, x):
