@@ -58,11 +58,14 @@ def transformer(args):
 
 def transformer_model(args):
     images = tf.keras.Input((args.sequence_length, args.width, args.height, args.depth, 1), batch_size=args.batch_size)
+    embeddings = tf.keras.Input((args.sequence_length, 9600), batch_size=args.batch_size)
+
     em = embedding_model(args)
     trans = transformer(args)
     t_model = tf.keras.Sequential(name="TCNN-Transformer")
     t_model.add(images)
     t_model.add(layers.TimeDistributed(em, input_shape=(args.width, args.height, args.depth, 1)
                                   , batch_size=args.batch_size))
+    t_model.add(embeddings)
     t_model.add(trans)
     return t_model
