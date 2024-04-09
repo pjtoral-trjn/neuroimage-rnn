@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras.models import Model, TimeDistributed
+from tensorflow.keras.models import Model
 from tensorflow.keras import layers
 from model.tcnn import tcnn
 from model.rnn import get_head_layer
@@ -63,7 +63,7 @@ def transformer_model(args):
     trans = transformer(args)
     t_model = tf.keras.Sequential(name="TCNN-Transformer")
     t_model.add(images)
-    t_model.add(TimeDistributed(em, input_shape=(args.width, args.height, args.depth, 1)
+    t_model.add(layers.TimeDistributed(em, input_shape=(args.width, args.height, args.depth, 1)
                                   , batch_size=args.batch_size))
     t_model.add(trans)
     return t_model
