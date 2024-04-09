@@ -4,7 +4,7 @@ import sys
 import pandas as pd
 import datetime
 from model.rnn import rnn
-from model.transformer import tcnn_transformer
+from model.transformer.tcnn_transformer import tcnn_transformer
 from utils.constants import Constants
 from data.RNNData import RNNData
 
