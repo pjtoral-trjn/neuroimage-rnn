@@ -1,6 +1,7 @@
 import tensorflow as tf
 from model.transformer.layer import FeedForward
-from model.transformer.attn import CausalSelfAttention, CrossAttention
+from model.transformer.attn.CausalSelfAttention import CausalSelfAttention
+from model.transformer.attn.CrossAttention import CrossAttention
 
 class DecoderLayer(tf.keras.layers.Layer):
   def __init__(self,

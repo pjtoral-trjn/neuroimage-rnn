@@ -1,6 +1,6 @@
 import tensorflow as tf
-from model.transformer.attn import GlobalSelfAttention
-from model.transformer.layer import FeedForward
+from model.transformer.attn.GlobalSelfAttention import GlobalSelfAttention
+from model.transformer.layer.FeedForward import FeedForward
 
 class EncoderLayer(tf.keras.layers.Layer):
   def __init__(self,*, d_model, num_heads, dff, dropout_rate=0.1):
