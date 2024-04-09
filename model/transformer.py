@@ -43,15 +43,14 @@ def embedding_model(args):
     return embedding_model
 
 def transformer(args):
-    images = tf.keras.Input((args.sequence_length, 9600), batch_size=args.batch_size)
-    for _ in range(2):
-        x = transformer_encoder(head_size=64, num_heads=4, ff_dim=256, dropout=0.1)
-
+    embeddings = tf.keras.Input((args.sequence_length, 9600), batch_size=args.batch_size)
+    x = transformer_encoder(embeddings, head_size=64, num_heads=4, ff_dim=256, dropout=0.1)
+    x = transformer_encoder(x, head_size=64, num_heads=4, ff_dim=256, dropout=0.1)
     x = layers.GlobalAveragePooling1D()(x)
     x = layers.Dropout(0.1)(x)
     outputs = get_head_layer(args)(x)
 
-    model = tf.keras.Model(inputs=images, outputs=outputs, name="Transformer")
+    model = tf.keras.Model(inputs=embeddings, outputs=outputs, name="Transformer")
     print("\n\n\n ----- Transformer -----")
     print(model.summary())
     return model
