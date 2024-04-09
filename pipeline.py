@@ -138,6 +138,8 @@ class Pipeline:
         print("----- Model Summary Before Fit -----")
         print(self.model.summary())
         print("----- Fit Begin -----")
+        x,y = self.data.train_batch.__getitem__(0)
+        print(self.model.predict(x))
         self.history = self.fit()
         print("----- Fit Complete -----")
 
