@@ -1,5 +1,5 @@
 import tensorflow as tf
-from model.transformer.layer import FeedForward
+from model.transformer.layer.FeedForward import FeedForward
 from model.transformer.attn.CausalSelfAttention import CausalSelfAttention
 from model.transformer.attn.CrossAttention import CrossAttention
 
