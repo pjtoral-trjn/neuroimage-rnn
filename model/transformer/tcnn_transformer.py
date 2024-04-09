@@ -1,5 +1,5 @@
 import tensorflow as tf
-from model.cnn import tcnn
+from model.cnn.tcnn import tcnn
 from model.transformer.Transformer import Transformer
 from tensorflow.keras.layers import TimeDistributed
 
