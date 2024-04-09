@@ -1,7 +1,8 @@
 import tensorflow as tf
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, LSTM, Dense, TimeDistributed, Conv3D, Flatten, MaxPooling3D, Dropout, Bidirectional, GRU
-from model.tcnn import tcnn
+from tensorflow.keras.layers import LSTM, TimeDistributed, Bidirectional, GRU
+from model.cnn.tcnn import tcnn
+from model.utils import get_head_layer
 
 def rnn(args):
     """
@@ -78,11 +79,3 @@ def decision_network(args):
     head = get_head_layer(args)
     output = head(x)
     return Model(inputs=decision_network_input, outputs=output, name="Decision-Network")
-
-def get_head_layer(args):
-    if args.task_selection == "binary_classification":
-        return tf.keras.layers.Dense(units=1, name="Binary-Classifier", activation="sigmoid")
-    elif args.task_selection == "multi_classification":
-        return tf.keras.layers.Dense(units=3, name="Multi-Classifier", activation="softmax")
-    elif args.task_selection == "regression":
-        return tf.keras.layers.Dense(units=1, name="Regression")
