@@ -12,6 +12,7 @@ class PositionalEmbedding(tf.keras.layers.Layer):
     return self.embedding.compute_mask(*args, **kwargs)
 
   def call(self, x):
+    print(x)
     length = tf.shape(x)[1]
     x = self.embedding(x)
     # This factor sets the relative scale of the embedding and positonal_encoding.
