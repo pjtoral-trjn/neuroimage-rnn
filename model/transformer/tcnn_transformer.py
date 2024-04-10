@@ -42,9 +42,7 @@ def tcnn_transformer(args):
         dropout_rate=dropout_rate)
 
     print("\n\n\n Transformer Summary")
-    transformer.build(input_shape=(args.batch_size,args.sequence_length,9600))
-    transformer.summary()
-
+    print(transformer)
     model = tf.keras.Sequential(name="TCNN-Transformer")
     model.add(images)
     model.add(TimeDistributed(embedding_model, input_shape=(args.width, args.height, args.depth, 1)
