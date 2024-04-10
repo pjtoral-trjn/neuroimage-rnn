@@ -42,6 +42,7 @@ def tcnn_transformer(args):
         dropout_rate=dropout_rate)
 
     print("\n\n\n Transformer Summary")
+    transformer.compile()
     transformer.summary()
 
     model = tf.keras.Sequential(name="TCNN-Transformer")
