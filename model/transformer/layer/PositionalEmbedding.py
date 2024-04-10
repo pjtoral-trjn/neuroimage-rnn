@@ -6,7 +6,7 @@ class PositionalEmbedding(tf.keras.layers.Layer):
     super().__init__()
     self.d_model = d_model
     self.embedding = tf.keras.layers.Embedding(vocab_size, d_model, mask_zero=True)
-    self.pos_encoding = self.positional_encoding(length=2048, depth=d_model)
+    self.pos_encoding = self.positional_encoding(length=3, depth=d_model)
 
   def compute_mask(self, *args, **kwargs):
     return self.embedding.compute_mask(*args, **kwargs)
