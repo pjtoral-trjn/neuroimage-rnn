@@ -22,9 +22,9 @@ class Decoder(tf.keras.layers.Layer):
 
   def call(self, x, context):
     # `x` is token-IDs shape (batch, target_seq_len)
-    x = self.pos_embedding(x)  # (batch_size, target_seq_len, d_model)
-
-    x = self.dropout(x)
+    # x = self.pos_embedding(x)  # (batch_size, target_seq_len, d_model)
+    #
+    # x = self.dropout(x)
 
     for i in range(self.num_layers):
       x  = self.dec_layers[i](x, context)
