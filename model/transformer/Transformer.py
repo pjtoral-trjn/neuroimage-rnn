@@ -22,10 +22,9 @@ class Transformer(tf.keras.Model):
   def call(self, inputs):
     # To use a Keras model with `.fit` you must pass all your inputs in the
     # first argument.
-    print(inputs)
-    context, x  = inputs
+    x  = inputs
 
-    context = self.encoder(context)  # (batch_size, context_len, d_model)
+    context = self.encoder(x)  # (batch_size, context_len, d_model)
 
     x = self.decoder(x, context)  # (batch_size, target_len, d_model)
 
