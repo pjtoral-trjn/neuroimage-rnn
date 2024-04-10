@@ -51,7 +51,7 @@ class Pipeline:
                                       input_vocab_size=9600,
                                       target_vocab_size=9600,
                                       dropout_rate=dropout_rate)
-            self.model.build((self.batch_size, self.args.sequence_length, self.args.width, self.args.height,
+            self.model.build((self.args.batch_size, self.args.sequence_length, self.args.width, self.args.height,
                               self.args.depth, 1))
 
         if self.model is not None:
