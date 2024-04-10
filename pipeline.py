@@ -4,7 +4,7 @@ import sys
 import pandas as pd
 import datetime
 from model.rnn import rnn
-from model.transformer.tcnn_transformer import tcnn_transformer
+from model.transformer.Transformer import Transformer
 from utils.constants import Constants
 from data.RNNData import RNNData
 
@@ -38,7 +38,19 @@ class Pipeline:
         if self.args.model_architecture == "rnn":
             self.model = rnn(self.args)
         if self.args.model_architecture == "transformer":
-            self.model = tcnn_transformer(self.args)
+            num_layers = 2
+            d_model = 64
+            dff = 256
+            num_heads = 4
+            dropout_rate = 0.1
+            self.model = Transformer(args=self.args,
+                                      num_layers=num_layers,
+                                      d_model=d_model,
+                                      num_heads=num_heads,
+                                      dff=dff,
+                                      input_vocab_size=9600,
+                                      target_vocab_size=9600,
+                                      dropout_rate=dropout_rate)
         if self.model is not None:
             self.set_optimizer()
             self.set_loss_fn()
