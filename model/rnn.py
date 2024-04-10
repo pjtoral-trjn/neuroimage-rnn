@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, LSTM, Dense, TimeDistributed, Conv3D, Flatten, MaxPooling3D, Dropout, Bidirectional, GRU
 from model.tcnn import tcnn
+import keras.backend as K
 
 def rnn(args):
     """
@@ -45,6 +46,8 @@ def rnn(args):
         rnn_model.add(Bidirectional(GRU(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
     elif args.rnn_selection == "lstm":
         rnn_model.add(Bidirectional(LSTM(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
+    # Adding AttentionLayer
+    rnn_model.add(AttentionLayer())
 
     # Configure Head
     if args.include_decision_network is True:
@@ -86,3 +89,28 @@ def get_head_layer(args):
         return tf.keras.layers.Dense(units=3, name="Multi-Classifier", activation="softmax")
     elif args.task_selection == "regression":
         return tf.keras.layers.Dense(units=1, name="Regression")
+
+class AttentionLayer(tf.keras.Layer):
+    def __init__(self, units):
+        super(AttentionLayer, self).__init__()
+
+    def build(self, input_shape):
+        self.W = self.add_weight(name='attention_weight', shape=(input_shape[-1], 1),
+                                 initializer='random_normal', trainable=True)
+        self.b = self.add_weight(name='attention_bias', shape=(input_shape[1], 1),
+                                 initializer='zeros', trainable=True)
+        super(AttentionLayer, self).build(input_shape)
+
+    def call(self, x):
+        # Alignment scores. Pass them through tanh function
+        e = K.tanh(K.dot(x, self.W) + self.b)
+        # Remove dimension of size 1
+        e = K.squeeze(e, axis=-1)
+        # Compute the weights
+        alpha = K.softmax(e)
+        # Reshape to tensorFlow format
+        alpha = K.expand_dims(alpha, axis=-1)
+        # Compute the context vector
+        context = x * alpha
+        context = K.sum(context, axis=1)
+        return context
