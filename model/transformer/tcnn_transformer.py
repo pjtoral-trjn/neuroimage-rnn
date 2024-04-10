@@ -5,6 +5,7 @@ from tensorflow.keras.layers import TimeDistributed
 
 def tcnn_transformer(args):
     images = tf.keras.Input((args.sequence_length, args.width, args.height, args.depth, 1), batch_size=args.batch_size)
+    embeddings = tf.keras.Input((args.sequence_length, 9600), batch_size=args.batch_size)
 
     # Load Embedding Model
     tcnn_full_model = tcnn(args)
@@ -41,12 +42,11 @@ def tcnn_transformer(args):
         target_vocab_size=9600,
         dropout_rate=dropout_rate)
 
-    print("\n\n\n Transformer Summary")
-    print(transformer)
     model = tf.keras.Sequential(name="TCNN-Transformer")
     model.add(images)
     model.add(TimeDistributed(embedding_model, input_shape=(args.width, args.height, args.depth, 1)
                                   , batch_size=args.batch_size))
-    # model.add(transformer)
+    model.add(embeddings)
+    model.add(transformer)
 
-    return transformer
+    return model
