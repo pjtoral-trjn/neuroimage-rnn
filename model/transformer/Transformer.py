@@ -35,6 +35,7 @@ class Transformer(tf.keras.Model):
 
     # first argument.
     x = self.feature_extractor(inputs)
+    print(x)
     context = self.encoder(x)  # (batch_size, context_len, d_model)
     x = self.decoder(x, context)  # (batch_size, target_len, d_model)
     # Final linear layer output.
