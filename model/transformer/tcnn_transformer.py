@@ -34,6 +34,7 @@ def tcnn_transformer(args):
     num_heads = 4
     dropout_rate = 0.1
     transformer = Transformer(args=args,
+        inputs=embeddings,
         num_layers=num_layers,
         d_model=d_model,
         num_heads=num_heads,
@@ -47,6 +48,6 @@ def tcnn_transformer(args):
     model.add(TimeDistributed(embedding_model, input_shape=(args.width, args.height, args.depth, 1)
                                   , batch_size=args.batch_size))
     model.add(embeddings)
-    model.add(transformer)
+    # model.add(transformer)
 
-    return model
+    return transformer
