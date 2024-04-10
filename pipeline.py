@@ -39,7 +39,7 @@ class Pipeline:
             self.model = rnn(self.args)
         if self.args.model_architecture == "transformer":
             num_layers = 2
-            d_model = 9600
+            d_model = 512
             dff = 256
             num_heads = 4
             dropout_rate = 0.1
@@ -48,8 +48,8 @@ class Pipeline:
                                       d_model=d_model,
                                       num_heads=num_heads,
                                       dff=dff,
-                                      input_vocab_size=9600,
-                                      target_vocab_size=9600,
+                                      input_vocab_size=3,
+                                      target_vocab_size=3,
                                       dropout_rate=dropout_rate)
             self.model.build((self.args.batch_size, self.args.sequence_length, self.args.width, self.args.height,
                               self.args.depth, 1))
