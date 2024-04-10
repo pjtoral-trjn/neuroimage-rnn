@@ -5,7 +5,7 @@ from model.rnn.rnn import get_head_layer
 class Transformer(tf.keras.Model):
   def __init__(self, *, args, inputs, num_layers, d_model, num_heads, dff,
                input_vocab_size, target_vocab_size, dropout_rate=0.1):
-    super().__init__(inputs=inputs)
+    super().__init__()
     self.encoder = Encoder(num_layers=num_layers, d_model=d_model,
                            num_heads=num_heads, dff=dff,
                            vocab_size=input_vocab_size,
