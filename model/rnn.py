@@ -42,12 +42,14 @@ def rnn(args):
                                   , batch_size=args.batch_size))
 
     # Add RNN Backbone
+    rnn_layer = None
     if args.rnn_selection == "gru":
-        rnn_model.add(Bidirectional(GRU(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
+        rnn_layer = Bidirectional(GRU(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout))
     elif args.rnn_selection == "lstm":
-        rnn_model.add(Bidirectional(LSTM(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
+        rnn_layer = Bidirectional(LSTM(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout))
     # Adding AttentionLayer
-    rnn_model.add(AttentionLayer())
+    rnn_model.add(rnn_layer)
+    rnn_model.add(AttentionLayer()(rnn_layer))
 
     # Configure Head
     if args.include_decision_network is True:
