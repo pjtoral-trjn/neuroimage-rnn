@@ -90,7 +90,7 @@ def get_head_layer(args):
     elif args.task_selection == "regression":
         return tf.keras.layers.Dense(units=1, name="Regression")
 
-class AttentionLayer(tf.keras.Layer):
+class AttentionLayer(tf.keras.layers.Layer):
     def __init__(self, units):
         super(AttentionLayer, self).__init__()
 
