@@ -42,9 +42,9 @@ def rnn(args):
 
     # Add RNN Backbone
     if args.rnn_selection == "gru":
-        rnn_model.add(Bidirectional(GRU(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
+        rnn_model.add(Bidirectional(GRU(args.rnn_hidden_units, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
     elif args.rnn_selection == "lstm":
-        rnn_model.add(Bidirectional(LSTM(128, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
+        rnn_model.add(Bidirectional(LSTM(args.rnn_hidden_units, return_sequences=True, recurrent_dropout=args.recurrent_dropout)))
 
     # Configure Head
     if args.include_decision_network is True:

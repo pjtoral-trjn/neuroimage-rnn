@@ -26,6 +26,9 @@ def config_parser():
     configuration_parser.add_argument("-rno", "--recurrent_dropout", type=float, default=0.1
                                       , help="Recurrent Network Dropout")
 
+    configuration_parser.add_argument("-rhu", "--rnn_hidden_units", type=int, default=128
+                                      , help="RNN Hidden Unit Size")
+
 
     # necessary configuration
     configuration_parser.add_argument("-g", "--gpu", type=int, help="GPU ID Selection")
