@@ -9,6 +9,7 @@ from data.RNNData import RNNData
 
 class Pipeline:
     def __init__(self, args):
+        self.lr_scheduler = None
         self.optimizer = None
         self.history = None
         self.test_batch = None
@@ -43,7 +44,13 @@ class Pipeline:
             self.compile()
 
     def set_optimizer(self):
-        self.optimizer = tf.keras.optimizers.RMSprop(learning_rate=self.args.init_learning_rate)
+        self.lr_scheduler = tf.keras.optimizers.schedules.ExponentialDecay(
+            self.args.init_learning_rate,
+            decay_steps=1566,
+            decay_rate=0.96,
+            staircase=True
+        )
+        self.optimizer = tf.keras.optimizers.RMSprop(learning_rate=self.lr_scheduler)
 
     def set_loss_fn(self):
         if self.args.task_selection == Constants.binary_classification:
