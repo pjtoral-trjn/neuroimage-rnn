@@ -46,7 +46,9 @@ class Pipeline:
     def set_optimizer(self):
         self.lr_scheduler = tf.keras.optimizers.schedules.ExponentialDecay(
             self.args.init_learning_rate,
-            decay_steps=1566,
+            # decay_steps=1566,
+            # half epoch
+            decay_steps=783,
             decay_rate=0.96,
             staircase=True
         )
@@ -84,7 +86,7 @@ class Pipeline:
             # min_delta = 0.1
         print("Monitor for Callback:",monitor)
         early_stopping_cb = tf.keras.callbacks.EarlyStopping(monitor=monitor, patience=self.args.early_stop
-                                                             , verbose=1, restore_best_weights=True)
+                                                             , min_delta=0.01, verbose=1, restore_best_weights=True)
         self.callbacks = [early_stopping_cb]
 
     def set_metrics(self):
