@@ -80,12 +80,14 @@ class Pipeline:
         if (self.args.task_selection == Constants.binary_classification or
                 self.args.task_selection == Constants.multi_classification):
             monitor = "val_auc"
+            mode = "max"
             # min_delta = 0.01
         elif self.args.task_selection == Constants.regression:
             monitor = "val_loss"
+            mode = "min"
             # min_delta = 0.1
         print("Monitor for Callback:",monitor)
-        early_stopping_cb = tf.keras.callbacks.EarlyStopping(monitor=monitor, patience=self.args.early_stop
+        early_stopping_cb = tf.keras.callbacks.EarlyStopping(monitor=monitor, patience=self.args.early_stop, mode=mode
                                                              , min_delta=0.01, verbose=1, restore_best_weights=True)
         self.callbacks = [early_stopping_cb]
 
