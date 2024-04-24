@@ -49,7 +49,7 @@ class Pipeline:
             # decay_steps=1566,
             # half epoch
             decay_steps=783,
-            decay_rate=0.96,
+            decay_rate=0.95,
             staircase=True
         )
         self.optimizer = tf.keras.optimizers.RMSprop(learning_rate=self.lr_scheduler)
@@ -79,8 +79,8 @@ class Pipeline:
 
         if (self.args.task_selection == Constants.binary_classification or
                 self.args.task_selection == Constants.multi_classification):
-            monitor = "val_auc"
-            mode = "max"
+            monitor = "val_loss"
+            mode = "min"
             # min_delta = 0.01
         elif self.args.task_selection == Constants.regression:
             monitor = "val_loss"
