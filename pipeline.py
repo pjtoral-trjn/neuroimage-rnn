@@ -49,7 +49,7 @@ class Pipeline:
             # decay_steps=1566,
             # half epoch
             decay_steps=783,
-            decay_rate=0.95,
+            decay_rate=0.96,
             staircase=True
         )
         self.optimizer = tf.keras.optimizers.RMSprop(learning_rate=self.lr_scheduler)

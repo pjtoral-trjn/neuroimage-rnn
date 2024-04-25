@@ -24,7 +24,7 @@ def rnn(args):
 
     # Any Trainable Layers in the Embedding CNN? None currently activated
     i = 0
-    trainable_layers = round(len(embedding_model.layers) * 0.0)
+    trainable_layers = round(len(embedding_model.layers) * 1.0)
     for layer in embedding_model.layers:
         if i < len(embedding_model.layers) - trainable_layers:
             layer.trainable = False
