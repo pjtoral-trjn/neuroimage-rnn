@@ -15,7 +15,7 @@ def rnn(args):
 
     # Load Embedding Model
     tcnn_full_model = tcnn(args)
-    tcnn_full_model.set_weights(tf.keras.models.load_model(args.embedding_model_pathway, compile=False).get_weights())
+    # tcnn_full_model.set_weights(tf.keras.models.load_model(args.embedding_model_pathway, compile=False).get_weights())
     embedding_model = tf.keras.models.Sequential(name="3DCNN")
 
     # Pop head off Embedding Model to Output Embedding and NOT HEAD
