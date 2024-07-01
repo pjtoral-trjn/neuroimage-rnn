@@ -58,7 +58,7 @@ class Transformer(tf.keras.Model):
       embedding_model = tf.keras.models.Sequential(name="3DCNN")
 
       # Pop head off Embedding Model to Output Embedding and NOT HEAD
-      for layer in tcnn_full_model.layers[0:-2]:
+      for layer in tcnn_full_model.layers[0:-1]:
           embedding_model.add(layer)
       embedding_model.add(tf.keras.layers.Dense(units=512, name="3DCNN-Head-Transformer"))
       # Any Trainable Layers in the Embedding CNN? None currently activated
